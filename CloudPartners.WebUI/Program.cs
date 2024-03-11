@@ -1,3 +1,5 @@
+using CloudPartners.WebUI.Models;
+
 namespace CloudPartners.WebUI
 {
     public class Program
@@ -8,6 +10,8 @@ namespace CloudPartners.WebUI
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            
+            builder.Services.AddDbContext<Db>();
 
             var app = builder.Build();
 
