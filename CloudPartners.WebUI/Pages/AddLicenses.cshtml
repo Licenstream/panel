@@ -1,0 +1,13 @@
+﻿@page
+@using Domain;
+@model CloudPartners.WebUI.Pages.AddLicensesModel
+@{
+    <h3>Add a license</h3>
+    <form method="post">
+        <input type="number" name="id" />
+        <input type="text" name="companyname" />
+        <input type="text" name="description" />
+
+        <button type="submit">Add</button>
+    </form>
+}

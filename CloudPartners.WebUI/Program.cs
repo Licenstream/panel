@@ -1,4 +1,4 @@
-using CloudPartners.WebUI.Models;
+using Domain;
 
 namespace CloudPartners.WebUI
 {

@@ -1,31 +1,28 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace CloudPartners.WebUI.Pages
 {
-    public class UsersModel : PageModel
+    public class AddLicensesModel : PageModel
     {
         private readonly Db _dbcontext;
-        public List<User> Users { get; set; } = new List<User>();
 
         [BindProperty]
-        public User NewUser { get; set; }
-
-
-        public UsersModel(Db dbcontext)
+        public License NewLicense { get; set; }
+        
+        public AddLicensesModel(Db dbcontext)
         {
             _dbcontext = dbcontext;
         }
-
         public void OnGet()
         {
-            Users = _dbcontext.Users.ToList();
         }
 
         public IActionResult OnPost()
         {
-            _dbcontext.Users.Add(NewUser);
+            _dbcontext.Licenses.Add(NewLicense);
             _dbcontext.SaveChanges();
             return RedirectToPage();
         }

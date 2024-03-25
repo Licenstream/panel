@@ -1,4 +1,40 @@
 ﻿@page
+@using Domain;
 @model CloudPartners.WebUI.Pages.UsersModel
 @{
+
+    
 }
+
+<h1>Users</h1>
+
+<form method="post">
+    <input type="number" name="id" />
+    <input type="text" name="name" />
+
+    <button type="submit">Add</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (User user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @user.Id
+                </td>
+                <td>
+                    @user.Name
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
