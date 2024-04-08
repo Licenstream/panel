@@ -6,7 +6,7 @@ public class License
 
     public string AccountId { get; set; }
 
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     public string CompanyName {  get; set; }
 

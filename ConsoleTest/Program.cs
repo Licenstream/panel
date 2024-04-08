@@ -4,13 +4,12 @@ namespace ConsoleTest
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
 
             MicrosoftAPI microsoftAPI = new MicrosoftAPI();
 
-            var license = microsoftAPI.GetLicense();
+            var license = await microsoftAPI.GetLicenseAsync();
         }
     }
 }

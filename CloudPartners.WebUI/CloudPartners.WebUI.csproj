@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <None Include="Pages\Customers.cshtml" />
+    <None Include="wwwroot\Images\Logo.png" />
   </ItemGroup>
 
 </Project>
