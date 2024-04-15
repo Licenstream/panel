@@ -1,5 +1,4 @@
-﻿using Domain.Interfaces;
-using Infrastructure;
+﻿using Infrastructure;
 using Domain;
 
 namespace ConsoleTest

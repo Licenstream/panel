@@ -1,0 +1,26 @@
+﻿@page
+@using Domain;
+@model LicenStream.WebUI.Pages.LicenseDetailsModel
+@{
+}
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SkuPartNumber</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>
+                    @Model.License.SkuPartNumber
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+</div>

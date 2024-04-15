@@ -11,26 +11,29 @@
     <table class="table">
         <thead>
             <tr>
-                <th>AccountId</th>
                 <th>AccountName</th>
-                <th>Description</th>
+                <th>SkuPartNumber</th>
+                <th>Consumed Units</th>
             </tr>
         </thead>
 
         <tbody>
             @foreach (License l in Model.Licenses)
             {
-                <tr>
-                    <td>
-                        @l.AccountId
-                    </td>
-                    <td>
-                        @l.AccountName
-                    </td>
-                    <td>
-                        @l.Description
-                    </td>
-                </tr>
+                
+                    <tr>
+                        <td>
+                            @l.AccountName
+                        </td>
+                        <td>
+                            <a asp-page="/LicenseDetails" asp-route-objectId="@l.SkuPartNumber">
+                                @l.SkuPartNumber
+                            </a>
+                        </td>
+                        <td>
+                            @l.ConsumedUnits
+                        </td>
+                    </tr>
             }
         </tbody>
 

@@ -2,5 +2,5 @@
 
 public class Customer : User
 {
-    List<License> Licenses { get; set; }
+    public List<License>? Licenses { get; set; }
 }

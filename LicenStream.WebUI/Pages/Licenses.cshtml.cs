@@ -12,7 +12,7 @@ namespace LicenStream.WebUI.Pages
         private readonly Db dbcontext;
         private readonly IDataHandler<License> _handler;
 
-        public List<License> Licenses { get; set; } = new List<License>();
+        public List<License> Licenses { get; set; } = new();
 
         public LicensesModel(IDataHandler<License> licenseHandler, Db context)
         {
