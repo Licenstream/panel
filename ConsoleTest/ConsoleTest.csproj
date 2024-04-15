@@ -9,7 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Suppliers\SupplierService.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\LicenStream.WebUI\LicenStream.WebUI.csproj" />
   </ItemGroup>
 
 </Project>

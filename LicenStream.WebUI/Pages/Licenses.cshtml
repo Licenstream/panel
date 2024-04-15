@@ -1,0 +1,38 @@
+﻿@page
+@using Domain;
+@model LicenStream.WebUI.Pages.LicensesModel
+@{
+    ViewData["Title"] = "Licenses";
+}
+
+<h1>License overview</h1>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>AccountId</th>
+                <th>AccountName</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (License l in Model.Licenses)
+            {
+                <tr>
+                    <td>
+                        @l.AccountId
+                    </td>
+                    <td>
+                        @l.AccountName
+                    </td>
+                    <td>
+                        @l.Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

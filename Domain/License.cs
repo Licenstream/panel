@@ -2,9 +2,9 @@
 
 public class License
 {
-    public string AccountName { get; set; }
+    public string? AccountName { get; set; }
 
-    public string AccountId { get; set; }
+    public string? AccountId { get; set; }
 
     public string Id { get; set; }
 
@@ -12,9 +12,9 @@ public class License
 
     public string Description { get; set; }
 
-    public DateOnly ExpiryDate { get; set; }
+    public DateOnly? ExpiryDate { get; set; }
 
-    public Supplier Supplier { get; set; }
+    public Supplier? Supplier { get; set; }
 
     public License()
     {

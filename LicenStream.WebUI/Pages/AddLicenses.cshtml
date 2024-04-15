@@ -1,0 +1,13 @@
+﻿@page
+@using Domain;
+@model LicenStream.WebUI.Pages.AddLicensesModel
+@{
+    <h3>Add a license</h3>
+    <form method="post">
+        <input type="text" name="id" />
+        <input type="text" name="companyname" />
+        <input type="text" name="description" />
+
+        <button type="submit">Add</button>
+    </form>
+}

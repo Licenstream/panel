@@ -1,15 +1,17 @@
-﻿using SupplierService;
+﻿using Domain.Interfaces;
+using Infrastructure;
+using Domain;
 
 namespace ConsoleTest
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
 
-            MicrosoftAPI microsoftAPI = new MicrosoftAPI();
+            var handler = new MicrosoftLicenseDataHandler(new HttpClient());
 
-            var license = await microsoftAPI.GetLicenseAsync();
+            IEnumerable<License> licenses = handler.GetAll();
         }
     }
 }
