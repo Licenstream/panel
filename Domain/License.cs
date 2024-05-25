@@ -11,6 +11,9 @@ public class License
     public string Id { get; set; }
 
     public string SkuPartNumber { get; set; }
+    public string totalLicenses { get; set; }
+
+    public string Status { get; set; }
 
     public int ConsumedUnits {  get; set; }
 

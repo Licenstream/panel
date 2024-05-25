@@ -13,7 +13,8 @@
             <tr>
                 <th>AccountName</th>
                 <th>SkuPartNumber</th>
-                <th>Consumed Units</th>
+                <th>Totaal aantal licenties</th>
+                <th>Status</th>
             </tr>
         </thead>
 
@@ -31,8 +32,11 @@
                             </a>
                         </td>
                         <td>
-                            @l.ConsumedUnits
+                        @l.totalLicenses
                         </td>
+                        <td>
+                            @l.Status
+                               </td>
                     </tr>
             }
         </tbody>
