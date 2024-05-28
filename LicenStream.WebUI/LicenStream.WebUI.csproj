@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\InfrastructureEF\InfrastructureEF.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
@@ -39,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Customers.cshtml" />
     <None Include="wwwroot\Images\Logo.png" />
   </ItemGroup>
 

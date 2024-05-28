@@ -7,23 +7,24 @@ namespace LicenStream.WebUI.Pages
 {
     public class AddLicensesModel : PageModel
     {
-        private readonly Db _dbcontext;
+        private readonly LicenseService _licenseService;
 
         [BindProperty]
         public License NewLicense { get; set; }
         
-        public AddLicensesModel(Db dbcontext)
+        public AddLicensesModel(LicenseService licenseService)
         {
-            _dbcontext = dbcontext;
+            _licenseService = licenseService;
         }
+        
         public void OnGet()
         {
         }
 
         public IActionResult OnPost()
         {
-            _dbcontext.Licenses.Add(NewLicense);
-            _dbcontext.SaveChanges();
+            _licenseService.Save(NewLicense);
+            
             return RedirectToPage();
         }
     }

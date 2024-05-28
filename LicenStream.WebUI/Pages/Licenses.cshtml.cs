@@ -9,23 +9,18 @@ namespace LicenStream.WebUI.Pages
 {
     public class LicensesModel : PageModel
     {
-        private readonly Db dbcontext;
-        private readonly IDataHandler<License> _handler;
+        private readonly LicenseService _licenseService;
 
-        public List<License> Licenses { get; set; } = new();
+        public IEnumerable<License> Licenses { get; set; }
 
-        public LicensesModel(IDataHandler<License> licenseHandler, Db context)
+        public LicensesModel(LicenseService licenseService)
         {
-            dbcontext = context;
-            _handler = licenseHandler;
+            _licenseService = licenseService;
+            Licenses = new List<License>();
         }
         public void OnGet()
         {
-            Licenses = dbcontext.Licenses.ToList();
-            foreach (var license in _handler.GetAll()) 
-            {
-                Licenses.Add(license);
-            }
+            Licenses = _licenseService.GetAll();
         }
     }
 }

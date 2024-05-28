@@ -6,23 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Domain;
+using LicenStream.WebUI.Pages.Models;
 
 namespace LicenStream.WebUI.Pages
 {
     public class CustomerOverviewModel : PageModel
     {
-        private readonly Db _context;
-
-        public CustomerOverviewModel(Db context)
+        private readonly CustomerService _customerService;
+        public IEnumerable<CustomerViewModel> Customers { get;set; } 
+     
+        public CustomerOverviewModel(CustomerService customerService)
         {
-            _context = context;
+            _customerService = customerService;
+
+            Customers = new List<CustomerViewModel>();
         }
-
-        public IList<Customer> Customer { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        
+        public void OnGet()
         {
-            Customer = await _context.Customers.ToListAsync();
+            var result = _customerService.GetAll();
+
+            Customers = CustomerViewModel.ConvertTo(result);
         }
     }
 }

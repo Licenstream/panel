@@ -1,6 +1,7 @@
 using Domain;
 using Domain.Interfaces;
 using Infrastructure;
+using InfrastructureEF;
 
 namespace LicenStream.WebUI
 {
@@ -11,10 +12,17 @@ namespace LicenStream.WebUI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddHttpClient<IDataHandler<License>, MicrosoftLicenseDataHandler>();
-            builder.Services.AddRazorPages();
+            builder.Services.AddScoped<LicenseService, LicenseService>();
+            builder.Services.AddScoped<CustomerService, CustomerService>();
+            builder.Services.AddScoped<UserService, UserService>();
             
-            builder.Services.AddDbContext<Db>();
+            builder.Services.AddScoped<IDataHandler<License>, LicenseEFDataHandler>();
+            builder.Services.AddScoped<IDataHandler<User>, UserEFDataHandler>();
+            builder.Services.AddScoped<IDataHandler<Customer>, CustomerEFDataHandler>();
+
+            builder.Services.AddMemoryCache();
+            
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 

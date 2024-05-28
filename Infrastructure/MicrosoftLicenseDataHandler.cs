@@ -1,12 +1,6 @@
 ﻿using Domain;
 using Domain.Interfaces;
-using MySqlConnector;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -19,9 +13,9 @@ namespace Infrastructure
             _httpClient = httpClient;
             _response = new LicenseResponse();
         }
-        public License Get(string input)
+        public License Get(int id)
         {
-            return GetAll().FirstOrDefault(x => x.SkuPartNumber == input);
+            return GetAll().FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<License> GetAll()
@@ -43,10 +37,11 @@ namespace Infrastructure
             }
             
             return Enumerable.Empty<License>();
-
-
-
         }
 
+        public int Insert(License dataType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

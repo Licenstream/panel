@@ -1,44 +1,39 @@
 ﻿@page
 @using Domain;
 @model LicenStream.WebUI.Pages.LicensesModel
+
 @{
-    ViewData["Title"] = "Licenses";
+    ViewData["Title"] = "Licenses Overview";
 }
 
-<h1>License overview</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
     <table class="table">
         <thead>
-            <tr>
-                <th>AccountName</th>
-                <th>SkuPartNumber</th>
-                <th>Totaal aantal licenties</th>
-                <th>Status</th>
-            </tr>
+        <tr>
+            <th>SkuPartNumber</th>
+            <th>Expired On</th>
+            <th>Totaal aantal licenties</th>
+        </tr>
         </thead>
-
         <tbody>
-            @foreach (License l in Model.Licenses)
-            {
-                
-                    <tr>
-                        <td>
-                            @l.AccountName
-                        </td>
-                        <td>
-                            <a asp-page="/LicenseDetails" asp-route-objectId="@l.SkuPartNumber">
-                                @l.SkuPartNumber
-                            </a>
-                        </td>
-                        <td>
-                        @l.totalLicenses
-                        </td>
-                        <td>
-                            @l.Status
-                               </td>
-                    </tr>
-            }
+        @foreach (License l in Model.Licenses)
+        {
+            <tr>
+                <td>
+                    <a asp-page="/LicenseDetails" asp-route-id="@l.Id">
+                        @l.SkuPartNumber
+                    </a>
+                </td>
+                <td>
+                    @l.NextLifeCycleDate
+                </td>
+                <td>
+                    @l.TotalLicenses
+                </td>
+            </tr>
+        }
         </tbody>
 
     </table>

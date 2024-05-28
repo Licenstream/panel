@@ -1,26 +1,58 @@
 ﻿@page
 @using Domain;
 @model LicenStream.WebUI.Pages.LicenseDetailsModel
+
 @{
+    ViewData["Title"] = "Licenses Detail";
 }
+
+<h1>@ViewData["Title"]</h1>
 
 <div>
     <table class="table">
         <thead>
-            <tr>
-                <th>Sku Name</th>
-            </tr>
+        <tr>
+        <th>
+            Sku Part Number
+        </th>
+        <th>
+            Created On
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Expired On
+        </th>
+        <th>
+            Total
+        </th>
+        <th>
+            Trail Version
+        </th>
         </thead>
-
         <tbody>
+        <tr>
+            <td>
+                @Model.License.SkuPartNumber
+            </td>
+            <td>
+                @Model.License.CreatedDate
+            </td>
+            <td>
+                @Model.License.Status
+            </td>
+            <td>
+                @Model.License.NextLifeCycleDate
+            </td>
+            <td>
+                @Model.License.TotalLicenses
+            </td>
+            <td>
+                @Model.License.IsTrail
+            </td>
 
-            <tr>
-                <td>
-                    @Model.License.SkuPartNumber
-                </td>
-            </tr>
-
+        </tr>
         </tbody>
-
     </table>
 </div>

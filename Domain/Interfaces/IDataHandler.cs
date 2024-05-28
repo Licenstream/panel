@@ -8,8 +8,11 @@ namespace Domain.Interfaces
 {
     public interface IDataHandler<TDataType>
     {
-        TDataType Get(string input);
+        TDataType Get(int id);
 
         IEnumerable<TDataType> GetAll();
+
+        int Insert(TDataType dataType);
+        
     }
 }

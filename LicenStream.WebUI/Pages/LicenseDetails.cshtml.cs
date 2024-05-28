@@ -16,9 +16,10 @@ namespace LicenStream.WebUI.Pages
         {
             _handler = handler;
         }
-        public void OnGet(string objectId)
+        
+        public void OnGet(int id)
         {
-            License = _handler.Get(objectId);
+            License = _handler.Get(id);
         }
     }
 }

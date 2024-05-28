@@ -1,0 +1,66 @@
+@page
+@model LicenStream.WebUI.Pages.CustomerImportExternalLicenses
+
+@{
+    ViewData["Title"] = "External Licenses";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@* <div> *@
+@*     <a asp-page-handler="SaveImportedExternalLicenses" asp-route-customerId="@Model.CustomerId"> *@
+@*         Click to add these licenses to the Customer *@
+@*     </a> *@
+@* </div> *@
+
+@foreach (var item in Model.Licenses)
+{
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+            <th>
+                Sku Part Number
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Expired On
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Trail Version
+            </th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    @item.SkuPartNumber
+                </td>
+                <td>
+                    @item.CreatedDate
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.NextLifeCycleDate
+                </td>
+                <td>
+                    @item.TotalLicenses
+                </td>
+                <td>
+                    @item.IsTrail
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}

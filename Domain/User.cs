@@ -2,9 +2,20 @@
 
 public class User
 {
-    public int Id { get; set; }
+    public int Id { get; private set; }
+    public string Name { get;  }
 
-    public string? Name { get; set; }
-
-    private string? Password { get; set; }
+    public User(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+    
+    public void SetId(int newId)
+    {
+        if (this.Id <= 0)
+            this.Id = newId;
+        else
+            throw new ArgumentException("Id already set");
+    }
 }

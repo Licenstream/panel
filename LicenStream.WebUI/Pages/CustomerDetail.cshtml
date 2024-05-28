@@ -1,0 +1,43 @@
+﻿@page
+@model LicenStream.WebUI.Pages.CustomerDetailModel
+
+@{
+    ViewData["Title"] = "Customer Detail";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Adress
+        </th>
+        <th>
+            Country
+        </th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Adress)
+            </td>
+            <td>
+                @Model.CustomerViewModel.Country
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <a asp-page="/CustomerImportExternalLicenses" asp-route-customerId="@Model.CustomerViewModel.Id">
+            View all external Licenses
+        </a>
+    </div>
+</div>
