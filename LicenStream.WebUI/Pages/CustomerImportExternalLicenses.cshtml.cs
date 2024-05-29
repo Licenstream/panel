@@ -1,8 +1,6 @@
-using System.Collections;
 using Domain;
+using Domain.Interfaces;
 using Infrastructure;
-using InfrastructureEF;
-using InfrastructureEF.LicenseModels;
 using LicenStream.WebUI.Pages.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
@@ -13,12 +11,14 @@ namespace LicenStream.WebUI.Pages;
 public class CustomerImportExternalLicenses : PageModel
 {
     private readonly IMemoryCache _cache;
+    private readonly IDataHandler<License> _handler;
     public int CustomerId { get; set; }
     public IEnumerable<LicenseViewModel> Licenses { get; set; }
 
-    public CustomerImportExternalLicenses(IMemoryCache cache)
+    public CustomerImportExternalLicenses(IMemoryCache cache, IDataHandler<License> handler)
     {
         _cache = cache;
+        _handler = handler;
         Licenses = new List<LicenseViewModel>();
     }
 
@@ -40,7 +40,7 @@ public class CustomerImportExternalLicenses : PageModel
     public void SaveImportedExternalLicenses(int customerId)
     {
         var cacheKey = $"licenseList_{customerId}";
-        var licenseService = new LicenseService(new LicenseEFDataHandler());
+        var licenseService = new LicenseService(_handler);
 
         if (_cache.TryGetValue(cacheKey, out IEnumerable<LicenseViewModel> customerlicenses))
         {

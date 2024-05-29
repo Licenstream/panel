@@ -15,13 +15,14 @@ namespace LicenStream.WebUI
             builder.Services.AddScoped<LicenseService, LicenseService>();
             builder.Services.AddScoped<CustomerService, CustomerService>();
             builder.Services.AddScoped<UserService, UserService>();
-            
-            builder.Services.AddScoped<IDataHandler<License>, LicenseEFDataHandler>();
-            builder.Services.AddScoped<IDataHandler<User>, UserEFDataHandler>();
-            builder.Services.AddScoped<IDataHandler<Customer>, CustomerEFDataHandler>();
+
+            var connectionString = builder.Configuration["ConnectionString"];
+            builder.Services.AddScoped<IDataHandler<License>>(x => new LicenseEFDataHandler(connectionString));
+            builder.Services.AddScoped<IDataHandler<User>>(x => new UserEFDataHandler(connectionString));
+            builder.Services.AddScoped<IDataHandler<Customer>>(x => new CustomerEFDataHandler(connectionString));
 
             builder.Services.AddMemoryCache();
-            
+
             builder.Services.AddRazorPages();
 
             var app = builder.Build();

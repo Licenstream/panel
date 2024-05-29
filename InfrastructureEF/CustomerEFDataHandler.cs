@@ -5,9 +5,16 @@ namespace InfrastructureEF;
 
 public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
 {
+    private readonly string _connectionString;
+
+    public CustomerEFDataHandler(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+    
     public Customer Get(int id)
     {
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             var result = context.Customer
                 .FirstOrDefault(l => l.Id == id);
@@ -20,7 +27,7 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
     {
         var customerList = new List<Domain.Customer>();
 
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             var result = context.Customer;
             foreach (var item in result)
@@ -34,7 +41,7 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
 
     public int Insert(Customer dataType)
     {
-        using (var context = new LicenseContext()){
+        using (var context = new LicenseContext(_connectionString)){
             
             var newObject = new LicenseModels.Customer
             {

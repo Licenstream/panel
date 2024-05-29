@@ -41,7 +41,7 @@ namespace ConsoleTest
 
         private static void RunEFCall()
         {
-            var handler = new LicenseEFDataHandler();
+            var handler = new LicenseEFDataHandler("connectionString");
 
             handler.InsertLicenseData();
 

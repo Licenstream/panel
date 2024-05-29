@@ -7,6 +7,13 @@ namespace InfrastructureEF;
 
 public class LicenseContext : DbContext
 {
+    private readonly string _connectionString;
+
+    public LicenseContext(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+    
     public DbSet<LicenseModels.User> User { get; set; }
 
     public DbSet<LicenseModels.Customer> Customer { get; set; }
@@ -15,22 +22,10 @@ public class LicenseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
-// #if DEBUG
-//         optionsBuilder.LogTo(Console.WriteLine);
-         optionsBuilder.UseMySQL("server=localhost;database=Panel;user=root;password=mysql"); // local
-// #endif
-
-        //optionsBuilder.UseMySQL("server=145.220.74.142;database=Panel;user=root;password=P@$$W0RD"); // dev extern
-        //optionsBuilder.UseMySQL("server=172.16.2.33:3306;database=Panel;user=root;password=mysql"); // dev
-        //optionsBuilder.UseMySQL("server=172.16.2.53:3306;database=Panel;user=root;password=mysql"); // acceptation
-        //optionsBuilder.UseMySQL("server=172.16.2.43:3306;database=Panel;user=root;password=mysql"); // test
-        //optionsBuilder.UseMySQL("server=172.16.2.11:3306;database=Panel;user=root;password=mysql"); // live
-
-        // 172.16.2.33 - DEV
-        // 172.16.2.53 - ACCEP
-        // 172.16.2.43 - TEST
-        // 172.16.2.11 - LIVE
+#if DEBUG
+        optionsBuilder.LogTo(Console.WriteLine);
+#endif
+        optionsBuilder.UseMySQL(_connectionString); // local
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

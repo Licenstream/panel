@@ -5,6 +5,13 @@ namespace InfrastructureEF;
 
 public class UserEFDataHandler : IDataHandler<Domain.User>
 {
+    private readonly string _connectionString;
+
+    public UserEFDataHandler(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+    
     public User Get(int id)
     {
         throw new NotImplementedException();

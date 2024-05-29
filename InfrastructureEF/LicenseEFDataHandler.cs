@@ -8,9 +8,16 @@ namespace InfrastructureEF;
 
 public class LicenseEFDataHandler : IDataHandler<Domain.License>
 {
+    private readonly string _connectionString;
+
+    public LicenseEFDataHandler(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+    
     public License Get(int id)
     {
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             var result = context.License
                 .FirstOrDefault(l => l.Id == id);
@@ -24,7 +31,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
     {
         var licenseList = new List<Domain.License>();
 
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             var result = context.License;
             foreach (var license in result)
@@ -39,7 +46,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
 
     public int Insert(License dataType)
     {
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             var newObject = new LicenseModels.License()
             {
@@ -64,7 +71,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
 
     public void InsertLicenseData()
     {
-        using (var context = new LicenseContext())
+        using (var context = new LicenseContext(_connectionString))
         {
             // Creates the database if not exists
             // context.Database.EnsureCreated(); UIT !!!
