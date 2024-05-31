@@ -18,8 +18,10 @@ namespace LicenStream.WebUI
 
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddScoped<IDataHandler<License>>(x => new LicenseEFDataHandler(connectionString));
+            builder.Services.AddScoped<IDataBulkHandler<License>>(x => new LicenseEFDataHandler(connectionString));
             builder.Services.AddScoped<IDataHandler<User>>(x => new UserEFDataHandler(connectionString));
             builder.Services.AddScoped<IDataHandler<Customer>>(x => new CustomerEFDataHandler(connectionString));
+
 
             builder.Services.AddMemoryCache();
 
