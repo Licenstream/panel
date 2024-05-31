@@ -11,7 +11,14 @@ namespace LicenStream.WebUI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Logging.ClearProviders();
+            
+            using ILoggerFactory factory = LoggerFactory.Create(log => log.AddConsole());
+            ILogger logger = factory.CreateLogger("Program");
+            logger.LogInformation("Hello World! Logging is {Description}.", "fun");
+
             // Add services to the container.
+            builder.Services.AddSingleton<ILogger>(logger);
             builder.Services.AddScoped<LicenseService, LicenseService>();
             builder.Services.AddScoped<CustomerService, CustomerService>();
             builder.Services.AddScoped<UserService, UserService>();

@@ -15,7 +15,7 @@
 
 @if (Model.ShowToast)
 {
-    <div>$('#messageToast').toast('show');</div>
+    <script>$('#messageToast').toast('show');</script>
 };
 
 @foreach (var item in Model.Licenses)

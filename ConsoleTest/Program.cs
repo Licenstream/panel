@@ -2,6 +2,7 @@
 using Domain;
 using Domain.Interfaces;
 using InfrastructureEF;
+using Microsoft.Extensions.Logging;
 
 namespace ConsoleTest
 {
@@ -18,7 +19,10 @@ namespace ConsoleTest
 
         private static void RunMicrosoftLicenseApiCall()
         {
-            var handler = new MicrosoftLicenseApiHandler();
+            using ILoggerFactory factory = LoggerFactory.Create(log => log.ClearProviders());
+            ILogger logger = factory.CreateLogger("Program");
+            
+            var handler = new MicrosoftLicenseApiHandler(logger);
 
             try
             {

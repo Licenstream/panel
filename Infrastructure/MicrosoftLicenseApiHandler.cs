@@ -1,68 +1,85 @@
+using System.Net;
 using Domain;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Infrastructure;
 
 public class MicrosoftLicenseApiHandler
 {
+    private readonly ILogger _logger;
+
+    public MicrosoftLicenseApiHandler(ILogger logger)
+    {
+        _logger = logger;
+    }
+
     public IEnumerable<License> GetLicenses()
     {
         List<License> data = new List<License>();
 
         var token = GetAccessToken();
         var httpRequestMessage = GetSubscriptionBetaRequest(token.AccessToken);
-        var task = GetJsonDataTask(httpRequestMessage);
 
-        // Example JSON data for licenses
-        // {
-        //     "@odata.context": "https://graph.microsoft.com/beta/$metadata#directory/subscriptions(skuId,status,createdDateTime,nextLifecycleDateTime,isTrial,totalLicenses)",
-        //     "value": [
-        //         {
-        //             "skuId": "6fd2c87f-b296-42f0-b197-1e91e994b900",
-        //             "status": "Enabled",
-        //             "createdDateTime": "2024-03-04T00:00:00Z",
-        //             "nextLifecycleDateTime": "2024-07-04T00:00:00Z",
-        //             "isTrial": true,
-        //             "totalLicenses": 2
-        //         },
-        //         {
-        //             "skuId": "06ebc4ee-1bb5-47dd-8120-11324bc54e06",
-        //             "status": "Enabled",
-        //             "createdDateTime": "2024-03-04T00:00:00Z",
-        //             "nextLifecycleDateTime": "2024-07-04T00:00:00Z",
-        //             "isTrial": true,
-        //             "totalLicenses": 20
-        //         }
-        //     ]
-        // }
-
-        var desiredType = new
+        try
         {
-            value = new[]
+            var task = GetJsonDataTask(httpRequestMessage);
+
+            // Example JSON data for licenses
+            // {
+            //     "@odata.context": "https://graph.microsoft.com/beta/$metadata#directory/subscriptions(skuId,status,createdDateTime,nextLifecycleDateTime,isTrial,totalLicenses)",
+            //     "value": [
+            //         {
+            //             "skuId": "6fd2c87f-b296-42f0-b197-1e91e994b900",
+            //             "status": "Enabled",
+            //             "createdDateTime": "2024-03-04T00:00:00Z",
+            //             "nextLifecycleDateTime": "2024-07-04T00:00:00Z",
+            //             "isTrial": true,
+            //             "totalLicenses": 2
+            //         },
+            //         {
+            //             "skuId": "06ebc4ee-1bb5-47dd-8120-11324bc54e06",
+            //             "status": "Enabled",
+            //             "createdDateTime": "2024-03-04T00:00:00Z",
+            //             "nextLifecycleDateTime": "2024-07-04T00:00:00Z",
+            //             "isTrial": true,
+            //             "totalLicenses": 20
+            //         }
+            //     ]
+            // }
+
+            var desiredType = new
             {
-                new
+                value = new[]
                 {
-                    skuId = "",
-                    status = "",
-                    createdDateTime = "",
-                    nextLifecycleDateTime = "",
-                    isTrial = "",
-                    totalLicenses = ""
+                    new
+                    {
+                        skuId = "",
+                        status = "",
+                        createdDateTime = "",
+                        nextLifecycleDateTime = "",
+                        isTrial = "",
+                        totalLicenses = ""
+                    }
                 }
-            }
-        };
+            };
 
-        var anonymousType = JsonConvert.DeserializeAnonymousType(task.Result, desiredType);
-        foreach (var part in anonymousType.value)
+            var anonymousType = JsonConvert.DeserializeAnonymousType(task.Result, desiredType);
+            foreach (var part in anonymousType.value)
+            {
+                var skuPartNumber = part.skuId;
+                var status = part.status;
+                var createdDate = Convert.ToDateTime(part.createdDateTime);
+                var nextLifeCycleDate = Convert.ToDateTime(part.nextLifecycleDateTime);
+                var isTrail = Convert.ToBoolean(part.isTrial);
+                var totalLicenses = Convert.ToInt32(part.totalLicenses);
+                data.Add(new License(-1, skuPartNumber, status, totalLicenses, createdDate, nextLifeCycleDate,
+                    isTrail));
+            }
+        }
+        catch (Exception e)
         {
-            var skuPartNumber = part.skuId;
-            var status = part.status;
-            var createdDate = Convert.ToDateTime(part.createdDateTime);
-            var nextLifeCycleDate = Convert.ToDateTime(part.nextLifecycleDateTime);
-            var isTrail = Convert.ToBoolean(part.isTrial);
-            var totalLicenses = Convert.ToInt32(part.totalLicenses);
-            data.Add(new License(-1, skuPartNumber, status, totalLicenses, createdDate, nextLifeCycleDate,
-                isTrail));
+            _logger.LogError(e.Message);
         }
 
         return data;
@@ -134,6 +151,7 @@ public class MicrosoftLicenseApiHandler
         using (var response = await client.SendAsync(httpRequestMessage))
         {
             response.EnsureSuccessStatusCode();
+
             task = response.Content.ReadAsStringAsync();
         }
 

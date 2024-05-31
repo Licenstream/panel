@@ -13,16 +13,18 @@ public class CustomerImportExternalLicenses : PageModel
     private readonly IMemoryCache _cache;
     private readonly IDataHandler<License> _handler;
     private readonly IDataBulkHandler<License> _bulkHandler;
+    private readonly ILogger _logger;
     public int CustomerId { get; set; }
     public IEnumerable<LicenseViewModel> Licenses { get; set; }
     public bool ShowToast { get; set; }
     
     public CustomerImportExternalLicenses(IMemoryCache cache, IDataHandler<License> handler, 
-        IDataBulkHandler<License> bulkHandler)
+        IDataBulkHandler<License> bulkHandler, ILogger logger)
     {
         _cache = cache;
         _handler = handler;
         _bulkHandler = bulkHandler;
+        _logger = logger;
         Licenses = new List<LicenseViewModel>();
     }
 
@@ -34,7 +36,7 @@ public class CustomerImportExternalLicenses : PageModel
         if (!_cache.TryGetValue(cacheKey, out IEnumerable<LicenseViewModel> customerlicenses))
         {
             this.CustomerId = customerId;
-            var handler = new MicrosoftLicenseApiHandler();
+            var handler = new MicrosoftLicenseApiHandler(_logger);
             var result = handler.GetLicenses();
             customerlicenses = LicenseViewModel.ConvertTo(result);
             _cache.Set(cacheKey, customerlicenses, TimeSpan.FromMinutes(10));
