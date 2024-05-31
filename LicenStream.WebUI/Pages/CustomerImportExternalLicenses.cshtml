@@ -13,6 +13,11 @@
 @*     </a> *@
 @* </div> *@
 
+@if (Model.ShowToast)
+{
+    <div>$('#messageToast').toast('show');</div>
+};
+
 @foreach (var item in Model.Licenses)
 {
     <div>
@@ -63,4 +68,4 @@
             </tbody>
         </table>
     </div>
-}
+};

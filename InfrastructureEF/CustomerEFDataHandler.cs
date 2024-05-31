@@ -3,7 +3,7 @@ using Domain.Interfaces;
 
 namespace InfrastructureEF;
 
-public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
+public class CustomerEFDataHandler : IDataHandler<Domain.Customer>
 {
     private readonly string _connectionString;
 
@@ -11,7 +11,7 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
     {
         _connectionString = connectionString;
     }
-    
+
     public Customer Get(int id)
     {
         using (var context = new LicenseContext(_connectionString))
@@ -19,7 +19,8 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
             var result = context.Customer
                 .FirstOrDefault(l => l.Id == id);
 
-            return new Customer(result.Id, result.Name, result.Adress, result.Country);
+            return new Customer(result.Id, result.Name, result.Type, result.Company, result.Email,
+                result.Adress, result.Zipcode, result.City, result.State, result.Country, result.UserId);
         }
     }
 
@@ -32,7 +33,11 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
             var result = context.Customer;
             foreach (var item in result)
             {
-                customerList.Add(new Customer(item.Id, item.Name, item.Adress, item.Country));
+                customerList.Add(
+                    new Customer(item.Id, item.Name, item.Type, item.Company, item.Email,
+                        item.Adress, item.Zipcode, item.City, item.State, item.Country,
+                        item.UserId)
+                );
             }
         }
 
@@ -41,8 +46,8 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
 
     public int Insert(Customer dataType)
     {
-        using (var context = new LicenseContext(_connectionString)){
-            
+        using (var context = new LicenseContext(_connectionString))
+        {
             var newObject = new LicenseModels.Customer
             {
                 Name = dataType.Name,
@@ -58,7 +63,7 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
                 User = null,
                 Licenses = null
             };
-            
+
             var efLicenses = new List<LicenseModels.License>();
             foreach (var dataTypeLicense in dataType.Licenses)
             {
@@ -77,7 +82,7 @@ public class CustomerEFDataHandler: IDataHandler<Domain.Customer>
                     Customer = newObject,
                 });
             }
-            
+
             context.Customer.Add(newObject);
 
             // Saves changes

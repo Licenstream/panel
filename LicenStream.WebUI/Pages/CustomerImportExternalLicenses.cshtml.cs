@@ -12,18 +12,24 @@ public class CustomerImportExternalLicenses : PageModel
 {
     private readonly IMemoryCache _cache;
     private readonly IDataHandler<License> _handler;
+    private readonly IDataBulkHandler<License> _bulkHandler;
     public int CustomerId { get; set; }
     public IEnumerable<LicenseViewModel> Licenses { get; set; }
-
-    public CustomerImportExternalLicenses(IMemoryCache cache, IDataHandler<License> handler)
+    public bool ShowToast { get; set; }
+    
+    public CustomerImportExternalLicenses(IMemoryCache cache, IDataHandler<License> handler, 
+        IDataBulkHandler<License> bulkHandler)
     {
         _cache = cache;
         _handler = handler;
+        _bulkHandler = bulkHandler;
         Licenses = new List<LicenseViewModel>();
     }
 
     public void OnGet(int customerId)
     {
+        ShowToast = true;
+        
         var cacheKey = $"licenseList_{customerId}";
         if (!_cache.TryGetValue(cacheKey, out IEnumerable<LicenseViewModel> customerlicenses))
         {
@@ -40,12 +46,13 @@ public class CustomerImportExternalLicenses : PageModel
     public void SaveImportedExternalLicenses(int customerId)
     {
         var cacheKey = $"licenseList_{customerId}";
-        var licenseService = new LicenseService(_handler);
+        var licenseService = new LicenseService(_handler, _bulkHandler);
 
         if (_cache.TryGetValue(cacheKey, out IEnumerable<LicenseViewModel> customerlicenses))
         {
             var domainLicenses = LicenseViewModel.ConvertTo(customerlicenses);
-            licenseService.SaveToCustomer(domainLicenses, customerId);
+            ShowToast = licenseService.SaveToCustomer(domainLicenses, customerId);
         }
     }
+
 }

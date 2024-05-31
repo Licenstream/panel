@@ -15,7 +15,25 @@
             Name
         </th>
         <th>
+            Type
+        </th>
+        <th>
+            Company
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
             Adress
+        </th>
+        <th>
+            Zipcode
+        </th>
+        <th>
+            City
+        </th>
+        <th>
+            State
         </th>
         <th>
             Country
@@ -27,7 +45,25 @@
                 @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Email)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Adress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.Zipcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.CustomerViewModel.State)
             </td>
             <td>
                 @Model.CustomerViewModel.Country

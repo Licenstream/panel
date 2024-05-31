@@ -1,0 +1,18 @@
+insert into Customer values
+    (NULL,'Customer A','Primary','Fontys','info@fontys.nl','Rachelsmolen','0000 AA','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer B','Primary','Philips','info@philips.com','Strijp','1111 BB','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer C','Seconday','Insiders','info@insiders.nl','Flexweg','1212 CC','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer D','Thirt','Foryou','info@foryou.nl','Uitstraat','3409 DR','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer E','Primary','Makers','info@makers.com','Overbrug','3756 XV','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer F','Seconday','The Power','info@thepower.nl','Flexweg','1216 CC','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer G','Primary','Hema','info@hema.nl','Rachelsmolen','0004 AA','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer H','Primary','Plus','info@plus.nl','Strijp','1112 BB','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer I','Seconday','Welkoop','info@welkoop.nl','Flexweg','1214 CC','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer J','Thirt','WhatsUp','info@whatsup.com','Rachelsmolen','0001 AA','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer K','Primary','Flex Work','info@flexwork.nl','Stationsplein','3756 SE','Eindhoven',NULL,'Netherlands',
+     NULL),
+    (NULL,'Customer L','Seconday','Farmers','info@farmers.nl','Markt','2233 CF','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer M','Primary','V&D','info@vroomendreesman.nl','Hoofdstraat','3255 AD','Eindhoven',NULL,'Netherlands',
+     NULL),
+    (NULL,'Customer M','Primary','United','info@united.com','Eindje','3344 JB','Eindhoven',NULL,'Netherlands',NULL),
+    (NULL,'Customer N','Seconday','De Wit','info@dewit.nl','Grijze weg','1234 CC','Eindhoven',NULL,'Netherlands',NULL)

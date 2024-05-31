@@ -6,7 +6,7 @@ using Customer = InfrastructureEF.LicenseModels.Customer;
 
 namespace InfrastructureEF;
 
-public class LicenseEFDataHandler : IDataHandler<Domain.License>
+public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandler<Domain.License>
 {
     private readonly string _connectionString;
 
@@ -14,7 +14,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
     {
         _connectionString = connectionString;
     }
-    
+
     public License Get(int id)
     {
         using (var context = new LicenseContext(_connectionString))
@@ -22,7 +22,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
             var result = context.License
                 .FirstOrDefault(l => l.Id == id);
 
-            return new License(result.Id, result.SkuPartNumber, result.Status, 
+            return new License(result.Id, result.SkuPartNumber, result.Status,
                 0, DateTime.Now, DateTime.Now, false);
         }
     }
@@ -36,7 +36,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
             var result = context.License;
             foreach (var license in result)
             {
-                licenseList.Add(new License(license.Id, license.SkuPartNumber, license.Status, 
+                licenseList.Add(new License(license.Id, license.SkuPartNumber, license.Status,
                     0, DateTime.Now, DateTime.Now, false));
             }
         }
@@ -109,6 +109,34 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>
                 SkuPartNumber = "EA5633DD#",
                 Customer = customer
             });
+
+            // Saves changes
+            context.SaveChanges();
+        }
+    }
+
+    public void InsertBulk(IEnumerable<License> dataTypes, int customerId)
+    {
+        using (var context = new LicenseContext(_connectionString))
+        {
+            var newObjects = new List<LicenseModels.License>();
+            foreach (var item in dataTypes)
+            {
+                var newObject = new LicenseModels.License()
+                {
+                    SkuPartNumber = item.SkuPartNumber,
+                    Status = item.Status,
+                    ExpiredDate = item.NextLifeCycleDate,
+                    Count = Convert.ToInt32(item.TotalLicenses),
+                    Name = item.SkuPartNumber,
+                    Brand = item.SkuPartNumber,
+                    Type = 1,
+                    Customer = null
+                };
+                newObjects.Add(newObject);
+            }
+
+            context.License.AddRange(newObjects);
 
             // Saves changes
             context.SaveChanges();

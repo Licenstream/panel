@@ -9,6 +9,10 @@ namespace LicenStream.WebUI.Pages
     {
         private readonly LicenseService _licenseService;
 
+        public bool ShowToast { get; set; }
+        
+        public string ToastText { get; set; }
+
         [BindProperty]
         public License NewLicense { get; set; }
         
