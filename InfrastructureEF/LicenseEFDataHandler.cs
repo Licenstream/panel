@@ -1,8 +1,11 @@
+using System.Diagnostics;
 using System.Text;
-using Domain;
 using Domain.Interfaces;
+using InfrastructureEF.Context;
+using InfrastructureEF.LicenseModels;
 using Microsoft.EntityFrameworkCore;
 using Customer = InfrastructureEF.LicenseModels.Customer;
+using License = Domain.License;
 using ServiceStatus = InfrastructureEF.LicenseModels.ServiceStatus;
 
 namespace InfrastructureEF;
@@ -23,7 +26,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
             var license = context.License
                 .FirstOrDefault(l => l.Id == id);
 
-            return  LicenseModels.License.ConvertTo(license);
+            return LicenseModels.License.ConvertTo(license);
         }
     }
 
@@ -37,7 +40,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
             foreach (var license in result)
             {
                 var newObject = LicenseModels.License.ConvertTo(license);
-                
+
                 licenseList.Add(newObject);
             }
         }
@@ -64,19 +67,76 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
     {
         using (var context = new LicenseContext(_connectionString))
         {
-            var newObjects = new List<LicenseModels.License>();
-           
-            foreach (var item in dataTypes)
+            try
             {
-                var newObject = LicenseModels.License.ConvertTo(item);
-                
-                newObjects.Add(newObject);
+                var newEfLicenseList = SaveLicenses(context, dataTypes);
+
+                var newLicenseServiceStatusList = SaveLicenseServiceStatus(context, newEfLicenseList);
+
+                SaveCustomerLicenses(context, customerId, newLicenseServiceStatusList);
             }
-
-            context.License.AddRange(newObjects);
-
-            // Saves changes
-            context.SaveChanges();
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+                throw;
+            }
         }
+    }
+
+    private void SaveCustomerLicenses(LicenseContext context, int customerId,
+        List<LicenseServiceStatus> newLicenseServiceStatusList)
+    {
+        foreach (var licenceId in newLicenseServiceStatusList.Select(x => x.LicenseId).Distinct())
+        {
+            var customerLicense = new CustomerLicense() { CustomerId = customerId, LicenseId = licenceId };
+            context.CustomerLicense.Add(customerLicense);
+        }
+
+        context.SaveChanges();
+    }
+
+    private List<LicenseServiceStatus> SaveLicenseServiceStatus(LicenseContext context,
+        List<LicenseModels.License> efLicenses)
+    {
+        var newLicenseServiceStatus = new List<LicenseModels.LicenseServiceStatus>();
+        foreach (var efLicense in efLicenses)
+        {
+            foreach (var serviceStatus in efLicense.ServiceStats)
+            {
+                newLicenseServiceStatus.Add(
+                    new LicenseServiceStatus() { LicenseId = efLicense.Id, ServiceStatusId = serviceStatus.Id });
+            }
+        }
+
+        context.LicenseServiceStatus.AddRange(newLicenseServiceStatus);
+        context.SaveChanges();
+
+        return newLicenseServiceStatus;
+    }
+
+    private List<LicenseModels.License> SaveLicenses(LicenseContext context, IEnumerable<License> licenses)
+    {
+        var efLicenses = new List<LicenseModels.License>();
+        foreach (var item in licenses)
+        {
+            var newLicense = LicenseModels.License.ConvertTo(item);
+            var newServiceStats = LicenseModels.ServiceStatus.ConvertTo(item.ServiceStats);
+            newLicense.ServiceStats.AddRange(newServiceStats);
+            efLicenses.Add(newLicense);
+        }
+
+        context.License.AddRange(efLicenses);
+        context.SaveChanges();
+
+        foreach (var efLicence in efLicenses)
+        {
+            context.ServiceStatus.AddRange(efLicence.ServiceStats);
+        }
+
+        context.SaveChanges();
+
+        return efLicenses;
     }
 }

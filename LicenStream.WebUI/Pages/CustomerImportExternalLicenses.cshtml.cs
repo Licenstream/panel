@@ -2,6 +2,7 @@ using Domain;
 using Domain.Interfaces;
 using Infrastructure;
 using LicenStream.WebUI.Pages.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 using License = Domain.License;
@@ -14,6 +15,8 @@ public class CustomerImportExternalLicenses : PageModel
     private readonly IDataHandler<License> _handler;
     private readonly IDataBulkHandler<License> _bulkHandler;
     private readonly ILogger _logger;
+   
+    [BindProperty]
     public int CustomerId { get; set; }
     public IEnumerable<LicenseViewModel> Licenses { get; set; }
     public bool ShowToast { get; set; }
@@ -30,8 +33,6 @@ public class CustomerImportExternalLicenses : PageModel
 
     public void OnGet(int customerId)
     {
-        ShowToast = true;
-        
         var cacheKey = $"licenseList_{customerId}";
         if (!_cache.TryGetValue(cacheKey, out IEnumerable<LicenseViewModel> customerlicenses))
         {
@@ -45,7 +46,7 @@ public class CustomerImportExternalLicenses : PageModel
         Licenses = _cache.Get<IEnumerable<LicenseViewModel>>(cacheKey);
     }
 
-    public void SaveImportedExternalLicenses(int customerId)
+    public void OnPostSave(int customerId)
     {
         var cacheKey = $"licenseList_{customerId}";
         var licenseService = new LicenseService(_handler, _bulkHandler);
@@ -55,6 +56,8 @@ public class CustomerImportExternalLicenses : PageModel
             var domainLicenses = LicenseViewModel.ConvertTo(customerlicenses);
             ShowToast = licenseService.SaveToCustomer(domainLicenses, customerId);
         }
+
+        RedirectToPage();
     }
 
 }

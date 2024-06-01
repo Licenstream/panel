@@ -72,8 +72,13 @@
         </tbody>
     </table>
     <div>
+        <a asp-page="/Licences" asp-route-customerId="@Model.CustomerViewModel.Id">
+            View database Licenses
+        </a>
+    </div>
+    <div>
         <a asp-page="/CustomerImportExternalLicenses" asp-route-customerId="@Model.CustomerViewModel.Id">
-            View all external Licenses
+            View external Licenses
         </a>
     </div>
 </div>

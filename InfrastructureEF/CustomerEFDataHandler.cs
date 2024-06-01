@@ -1,5 +1,7 @@
 using Domain;
 using Domain.Interfaces;
+using InfrastructureEF.Context;
+using Microsoft.EntityFrameworkCore;
 using License = InfrastructureEF.LicenseModels.License;
 using User = InfrastructureEF.LicenseModels.User;
 
@@ -61,15 +63,8 @@ public class CustomerEFDataHandler : IDataHandler<Domain.Customer>
                 City = dataType.City,
                 State = dataType.State,
                 Country = dataType.Country,
-                UserId = dataType.Userid,
-                User = new User(),
-                Licenses = new List<License>()
+                UserId = dataType.Userid
             };
-
-            foreach (var license in dataType.Licenses)
-            {
-                newObject.Licenses.Add(LicenseModels.License.ConvertTo(license));
-            }
             
             context.Customer.Add(newObject);
 

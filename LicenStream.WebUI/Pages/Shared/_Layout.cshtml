@@ -61,19 +61,15 @@
     </div>
 </footer>
 
-<!-- Flexbox container for aligning the toasts -->
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
-    <!-- Then put toasts within -->
-    <div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="messageToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-            <strong class="mr-auto">System</strong>
-            <small>just happend</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <img src="Images/Logo_Small.png" class="rounded me-2" alt="...">
+            <strong class="me-auto">System</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
-            Saved succesfull
+            Saved succesfull.
         </div>
     </div>
 </div>

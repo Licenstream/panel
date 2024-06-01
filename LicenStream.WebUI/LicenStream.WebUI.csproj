@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\InfrastructureEF\InfrastructureEF.csproj" />
+    <ProjectReference Include="..\InfrastructureMySqlCommand\InfrastructureMySqlCommand.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 

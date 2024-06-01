@@ -11,7 +11,7 @@ public class LicenseViewModel
     public string Name { get; set; }
     public int TotalLicenses { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime NextLifeCycleDate { get; set; }
+    public DateTime? NextLifeCycleDate { get; set; }
     public bool IsTrail { get; set; }
     public IEnumerable<ServiceStatusViewModel> ServiceStats { get; set; }
 

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenStream.WebUI", "LicenS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureEF", "InfrastructureEF\InfrastructureEF.csproj", "{6C00A3EB-C8BC-4A88-838C-8B574F73A2A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureMySqlCommand", "InfrastructureMySqlCommand\InfrastructureMySqlCommand.csproj", "{1370A0A5-D143-4AAF-A4F6-8A958CB82AE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6C00A3EB-C8BC-4A88-838C-8B574F73A2A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C00A3EB-C8BC-4A88-838C-8B574F73A2A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C00A3EB-C8BC-4A88-838C-8B574F73A2A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1370A0A5-D143-4AAF-A4F6-8A958CB82AE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1370A0A5-D143-4AAF-A4F6-8A958CB82AE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1370A0A5-D143-4AAF-A4F6-8A958CB82AE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1370A0A5-D143-4AAF-A4F6-8A958CB82AE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,12 +10,12 @@ public class License
     public string Name { get; }
     public int TotalLicenses { get; }
     public DateTime CreatedDate { get; }
-    public DateTime NextLifeCycleDate { get; }
+    public DateTime? NextLifeCycleDate { get; }
     public bool IsTrail { get; }
     public List<ServiceStatus> ServiceStats { get; }
 
     public License(int id, string skuId, string status, string name, int totalLicenses, DateTime createdDate, 
-        DateTime nextLifeCycleDate, bool isTrail)
+        DateTime? nextLifeCycleDate, bool isTrail)
     {
         Id = id;
         SkuId = skuId;
