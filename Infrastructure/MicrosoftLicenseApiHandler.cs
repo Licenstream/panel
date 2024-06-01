@@ -56,10 +56,21 @@ public class MicrosoftLicenseApiHandler
                     {
                         skuId = "",
                         status = "",
+                        skuPartNumber = "",
                         createdDateTime = "",
                         nextLifecycleDateTime = "",
                         isTrial = "",
-                        totalLicenses = ""
+                        totalLicenses = "",
+                        serviceStatus = new[]
+                        {
+                            new
+                            {
+                                servicePlanId = "",
+                                servicePlanName = "",
+                                provisioningStatus = "",
+                                appliesTo = ""
+                            }
+                        }
                     }
                 }
             };
@@ -67,14 +78,30 @@ public class MicrosoftLicenseApiHandler
             var anonymousType = JsonConvert.DeserializeAnonymousType(task.Result, desiredType);
             foreach (var part in anonymousType.value)
             {
-                var skuPartNumber = part.skuId;
+                var skuId = part.skuId;
                 var status = part.status;
+                var name = part.skuPartNumber;
                 var createdDate = Convert.ToDateTime(part.createdDateTime);
                 var nextLifeCycleDate = Convert.ToDateTime(part.nextLifecycleDateTime);
                 var isTrail = Convert.ToBoolean(part.isTrial);
                 var totalLicenses = Convert.ToInt32(part.totalLicenses);
-                data.Add(new License(-1, skuPartNumber, status, totalLicenses, createdDate, nextLifeCycleDate,
-                    isTrail));
+
+                var newLicense = new License(-1, skuId, status, name, totalLicenses,
+                    createdDate, nextLifeCycleDate, isTrail);
+                
+                foreach (var item in part.serviceStatus)
+                {
+                    var servicePlanId = item.servicePlanId;
+                    var servicePlanName = item.servicePlanName;
+                    var provisioningStatus = item.provisioningStatus;
+                    var appliesTo = item.appliesTo;
+                    
+                    newLicense.ServiceStats.Add(
+                        new ServiceStatus(servicePlanId, servicePlanName, 
+                            provisioningStatus, appliesTo));
+                }
+                
+                data.Add(newLicense);
             }
         }
         catch (Exception e)
@@ -135,7 +162,7 @@ public class MicrosoftLicenseApiHandler
     private HttpRequestMessage GetSubscriptionBetaRequest(string accessToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Get,
-            "https://graph.microsoft.com/beta/directory/subscriptions?$select=skuId,status,createdDateTime,nextLifecycleDateTime,isTrial,totalLicenses");
+            "https://graph.microsoft.com/beta/directory/subscriptions?$select=skuId,status,skuPartNumber,createdDateTime,nextLifecycleDateTime,isTrial,totalLicenses,serviceStatus");
 
         request.Headers.Add("Authorization", $"Bearer {accessToken}");
 

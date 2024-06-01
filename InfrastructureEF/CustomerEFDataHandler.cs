@@ -1,5 +1,7 @@
 using Domain;
 using Domain.Interfaces;
+using License = InfrastructureEF.LicenseModels.License;
+using User = InfrastructureEF.LicenseModels.User;
 
 namespace InfrastructureEF;
 
@@ -51,38 +53,24 @@ public class CustomerEFDataHandler : IDataHandler<Domain.Customer>
             var newObject = new LicenseModels.Customer
             {
                 Name = dataType.Name,
+                Type = dataType.Type,
+                Company = dataType.Country,
+                Email = dataType.Email,
                 Adress = dataType.Adress,
+                Zipcode = dataType.Zipcode,
+                City = dataType.City,
+                State = dataType.State,
                 Country = dataType.Country,
-                Type = null,
-                Company = null,
-                Email = null,
-                Zipcode = null,
-                City = null,
-                State = null,
-                UserId = null,
-                User = null,
-                Licenses = null
+                UserId = dataType.Userid,
+                User = new User(),
+                Licenses = new List<License>()
             };
 
-            var efLicenses = new List<LicenseModels.License>();
-            foreach (var dataTypeLicense in dataType.Licenses)
+            foreach (var license in dataType.Licenses)
             {
-                efLicenses.Add(new LicenseModels.License
-                {
-                    Id = dataTypeLicense.Id,
-                    Name = dataTypeLicense.SkuPartNumber,
-                    SkuPartNumber = dataTypeLicense.SkuPartNumber,
-                    Status = dataTypeLicense.Status,
-                    Type = null,
-                    Brand = null, // dataTypeLicense.Brand,
-                    Usage = dataTypeLicense.TotalLicenses,
-                    Count = dataTypeLicense.TotalLicenses,
-                    ExpiredDate = dataTypeLicense.NextLifeCycleDate,
-                    CustomerId = newObject.Id,
-                    Customer = newObject,
-                });
+                newObject.Licenses.Add(LicenseModels.License.ConvertTo(license));
             }
-
+            
             context.Customer.Add(newObject);
 
             // Saves changes

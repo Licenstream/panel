@@ -5,22 +5,27 @@ namespace Domain;
 public class License
 {
     public int Id { get; private set; }
-    public string SkuPartNumber { get; }
+    public string SkuId { get; }
     public string Status { get; }
+    public string Name { get; }
     public int TotalLicenses { get; }
     public DateTime CreatedDate { get; }
     public DateTime NextLifeCycleDate { get; }
     public bool IsTrail { get; }
+    public List<ServiceStatus> ServiceStats { get; }
 
-    public License(int id, string skuPartNumber, string status, int totalLicenses, DateTime createdDate, DateTime nextLifeCycleDate, bool isTrail)
+    public License(int id, string skuId, string status, string name, int totalLicenses, DateTime createdDate, 
+        DateTime nextLifeCycleDate, bool isTrail)
     {
         Id = id;
-        SkuPartNumber = skuPartNumber;
+        SkuId = skuId;
         Status = status;
+        Name = name;
         TotalLicenses = totalLicenses;
         CreatedDate = createdDate;
         NextLifeCycleDate = nextLifeCycleDate;
         IsTrail = isTrail;
+        ServiceStats = new List<ServiceStatus>();
     }
 
     public void SetId(int newId)
@@ -33,6 +38,7 @@ public class License
 
     public override string ToString()
     {
-        return $"{Id} {SkuPartNumber} {Status} {TotalLicenses} {CreatedDate} {NextLifeCycleDate} {IsTrail}";
+        return $"{Id} {SkuId} {Status} {TotalLicenses} {CreatedDate} {NextLifeCycleDate} {IsTrail}";
     }
 }
+

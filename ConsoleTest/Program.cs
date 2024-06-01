@@ -43,22 +43,13 @@ namespace ConsoleTest
             PrintResult(handler);
         }
 
-        private static void RunEFCall()
-        {
-            var handler = new LicenseEFDataHandler("connectionString");
-
-            handler.InsertLicenseData();
-
-            PrintResult(handler);
-        }
-
         private static void PrintResult(IDataHandler<License> handler)
         {
             IEnumerable<License> licenses = handler.GetAll();
 
             foreach (var item in licenses)
             {
-                Console.WriteLine($"ID:{item.Id}, SkuPartNumber:{item.SkuPartNumber}, Status:{item.Status}");
+                Console.WriteLine($"ID:{item.Id}, SkuPartNumber:{item.SkuId}, Status:{item.Status}");
             }
 
             Console.WriteLine("Press any key...");

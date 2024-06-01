@@ -19,6 +19,8 @@ public class LicenseContext : DbContext
     public DbSet<LicenseModels.Customer> Customer { get; set; }
 
     public DbSet<LicenseModels.License> License { get; set; }
+    
+    public DbSet<LicenseModels.ServiceStatus> ServiceStatus { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,6 +45,7 @@ public class LicenseContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired();
+            entity.Property(e => e.Type).IsRequired();
             entity.Property(e => e.Adress).IsRequired();
             entity.Property(e => e.Country).IsRequired();
         });
@@ -50,9 +53,14 @@ public class LicenseContext : DbContext
         modelBuilder.Entity<LicenseModels.License>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired();
-            entity.Property(e => e.SkuPartNumber).IsRequired();
+            entity.Property(e => e.SkuId).IsRequired();
             entity.Property(e => e.Status).IsRequired();
+            entity.Property(e => e.CreatedDate).IsRequired();
+        });
+        
+        modelBuilder.Entity<LicenseModels.ServiceStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id);
         });
     }
 }

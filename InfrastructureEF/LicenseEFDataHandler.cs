@@ -3,6 +3,7 @@ using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Customer = InfrastructureEF.LicenseModels.Customer;
+using ServiceStatus = InfrastructureEF.LicenseModels.ServiceStatus;
 
 namespace InfrastructureEF;
 
@@ -19,11 +20,10 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
     {
         using (var context = new LicenseContext(_connectionString))
         {
-            var result = context.License
+            var license = context.License
                 .FirstOrDefault(l => l.Id == id);
 
-            return new License(result.Id, result.SkuPartNumber, result.Status,
-                0, DateTime.Now, DateTime.Now, false);
+            return  LicenseModels.License.ConvertTo(license);
         }
     }
 
@@ -36,8 +36,9 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
             var result = context.License;
             foreach (var license in result)
             {
-                licenseList.Add(new License(license.Id, license.SkuPartNumber, license.Status,
-                    0, DateTime.Now, DateTime.Now, false));
+                var newObject = LicenseModels.License.ConvertTo(license);
+                
+                licenseList.Add(newObject);
             }
         }
 
@@ -48,17 +49,7 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
     {
         using (var context = new LicenseContext(_connectionString))
         {
-            var newObject = new LicenseModels.License()
-            {
-                SkuPartNumber = dataType.SkuPartNumber,
-                Status = dataType.Status,
-                ExpiredDate = dataType.NextLifeCycleDate,
-                Count = Convert.ToInt32(dataType.TotalLicenses),
-                Name = dataType.SkuPartNumber,
-                Brand = dataType.SkuPartNumber,
-                Type = 1,
-                Customer = null
-            };
+            var newObject = LicenseModels.License.ConvertTo(dataType);
 
             context.License.Add(newObject);
 
@@ -69,70 +60,16 @@ public class LicenseEFDataHandler : IDataHandler<Domain.License>, IDataBulkHandl
         }
     }
 
-    public void InsertLicenseData()
-    {
-        using (var context = new LicenseContext(_connectionString))
-        {
-            // Creates the database if not exists
-            // context.Database.EnsureCreated(); UIT !!!
-
-            // Adds a customer
-            var customer = new LicenseModels.Customer()
-            {
-                Name = "Customer A",
-                Adress = "Rachelsmolen",
-                Country = "NL",
-                City = "Eindhoven"
-            };
-            context.Customer.Add(customer);
-
-            // Adds some licenses
-            context.License.Add(new LicenseModels.License()
-            {
-                Name = "MS Office License",
-                Brand = "Microsoft",
-                Count = 145,
-                ExpiredDate = DateTime.Now.AddDays(3),
-                Type = 1,
-                Status = "InUse",
-                SkuPartNumber = "MW4433FF#",
-                Customer = customer
-            });
-            context.License.Add(new LicenseModels.License()
-            {
-                Name = "MS Teams License",
-                Brand = "Microsoft",
-                Count = 256,
-                ExpiredDate = DateTime.Now.AddDays(16),
-                Type = 1,
-                Status = "ReadyToUse",
-                SkuPartNumber = "EA5633DD#",
-                Customer = customer
-            });
-
-            // Saves changes
-            context.SaveChanges();
-        }
-    }
-
     public void InsertBulk(IEnumerable<License> dataTypes, int customerId)
     {
         using (var context = new LicenseContext(_connectionString))
         {
             var newObjects = new List<LicenseModels.License>();
+           
             foreach (var item in dataTypes)
             {
-                var newObject = new LicenseModels.License()
-                {
-                    SkuPartNumber = item.SkuPartNumber,
-                    Status = item.Status,
-                    ExpiredDate = item.NextLifeCycleDate,
-                    Count = Convert.ToInt32(item.TotalLicenses),
-                    Name = item.SkuPartNumber,
-                    Brand = item.SkuPartNumber,
-                    Type = 1,
-                    Customer = null
-                };
+                var newObject = LicenseModels.License.ConvertTo(item);
+                
                 newObjects.Add(newObject);
             }
 
