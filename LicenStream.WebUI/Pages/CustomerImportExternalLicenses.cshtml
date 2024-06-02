@@ -7,82 +7,65 @@
 
 <h1>@ViewData["Title"]</h1>
 
+@* <div> *@
+@*     <a asp-page-handler="SaveImportedExternalLicenses" asp-route-customerId="@Model.CustomerId"> *@
+@*         Click to add these licenses to the Customer *@
+@*     </a> *@
+@* </div> *@
+
 @if (Model.ShowToast)
 {
-    <script>
-        window.onload = (event) => {
-            const toastElements = document.querySelectorAll('.toast');
-            toastElements.forEach((element) => {
-                const toast = new bootstrap.Toast(element);
-                toast.show();
-            });
-        }
-    </script>
-}
+    <script>$('#messageToast').toast('show');</script>
+};
 
-<div class="accordion" id="accLicense">
-    @{
-        int accordionItemCounter = 1;
-        foreach (var item in Model.Licenses)
-        {
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading_accLicense_@accordionItemCounter">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse_accLicense_@accordionItemCounter"
-                            aria-expanded="true" aria-controls="collapse_accLicense_@accordionItemCounter">
-                        @item.ServiceStats.Count() items in the @item.Name (@item.SkuId)
-                    </button>
-                </h2>
-                <div id="collapse_accLicense_@accordionItemCounter" class="accordion-collapse collapse"
-                     aria-labelledby="heading_accLicense_@accordionItemCounter" data-bs-parent="#accLicense">
-                    <div class="accordion-body">
-                        <div class="border">
-                            <div class="col px-3">Created: @item.CreatedDate</div>
-                            <div class="col px-3">Trail: @item.IsTrail</div>
-                            <div class="col px-3">Status: @item.Status</div>
-                            <div class="col px-3">Expired on: @item.NextLifeCycleDate</div>
-                            <div class="col px-3">Total Licenses: @item.TotalLicenses</div>
-                        </div>
-                        <div>
-                            @{
-                                int accordionServiceStatusItemCounter = 1;
-                                foreach (var serviceStatusItem in @item.ServiceStats)
-                                {
-                                    <div class="accordion" id="accServiceStatus">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="heading_accServiceStatus_[@accordionItemCounter]_[@accordionServiceStatusItemCounter]">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#collapse_accServiceStatus_[@accordionItemCounter]_[@accordionServiceStatusItemCounter]"
-                                                        aria-expanded="false"
-                                                        aria-controls="collapse_accServiceStatus_[@accordionItemCounter]_[@accordionServiceStatusItemCounter]">
-                                                    @serviceStatusItem.ServicePlanName (@serviceStatusItem.ServicePlanId) | Applied to: @serviceStatusItem.AppliesTo
-                                                </button>
-                                            </h2>
-                                            <div id="collapse_accServiceStatus_[@accordionItemCounter]_[@accordionServiceStatusItemCounter]" class="accordion-collapse collapse"
-                                                 aria-labelledby="heading_accServiceStatus_[@accordionItemCounter]_[@accordionServiceStatusItemCounter]" data-bs-parent="#accServiceStatus">
-                                                <div class="accordion-body">
-                                                    Provisioning Status: @serviceStatusItem.ProvisioningStatus
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    accordionServiceStatusItemCounter++;
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            accordionItemCounter++;
-        }
-    }
-</div>
-<div class="border p-2">
-    <form asp-page-handler="Save" method="post">
-        <input type="hidden" name="customerId" value="@Model.CustomerId" />
-        <button class="btn btn-default">Save licenses to Customer</button>
-    </form>
-    @* <a class="m-3" asp-page-handler="SaveImportedExternalLicenses" asp-route-customerId="@Model.CustomerId"> *@
-    @*     Click to add these licenses to the Customer *@
-    @* </a> *@
-</div>
+@foreach (var item in Model.Licenses)
+{
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+            <th>
+                Sku Part Number
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Expired On
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Trail Version
+            </th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    @item.SkuPartNumber
+                </td>
+                <td>
+                    @item.CreatedDate
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.NextLifeCycleDate
+                </td>
+                <td>
+                    @item.TotalLicenses
+                </td>
+                <td>
+                    @item.IsTrail
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+};
